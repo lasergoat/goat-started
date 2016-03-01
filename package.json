@@ -8,12 +8,14 @@
     "postinstall": "mkdir log",
     "serve:api": "nodemon ./api/index.js",
     "serve:api-silent": "nodemon ./api/index.js &> ./log/api.log &",
-    "serve:public": "webpack-dev-server",
     "mongo:start": "mongod --port 27017 &> ./log/mongo.log &",
     "mongo:stop": "killall mongod",
     "prestart": "npm run mongo:start",
-    "start": "npm run serve:api-silent && npm run serve:public",
-    "stop": "npm run mongo:stop"
+    "start": "npm run serve:api-silent",
+    "stop": "npm run mongo:stop",
+
+    "build": "webpack -p --config webpack.config.js",
+    "build:watch": "webpack-dev-server --config webpack.config.js --port 9999"
   },
   "author": "",
   "license": "ISC",
@@ -34,6 +36,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "angular": "^1.5.0",
     "body-parser": "^1.15.0",
     "cors": "^2.7.1",
     "express": "^4.13.4",

@@ -1,1 +1,2 @@
 alert('hi');
+import 'angular';

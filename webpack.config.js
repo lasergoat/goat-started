@@ -5,6 +5,10 @@ var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var autoprefixer = require('autoprefixer');
 
+const paths = {
+  angular: path.resolve(__dirname, 'node_modules/angular/angular.min.js')
+};
+
 module.exports = {
   context: __dirname,
 
@@ -19,13 +23,18 @@ module.exports = {
     new webpack.NoErrorsPlugin(),
     new ExtractTextPlugin('[name]-[hash].css'),
     new HtmlWebpackPlugin({
-      title: '',
+      title: 'Testing',
       template: path.join(__dirname, 'public/index.html'),
       inject: 'body'
     })
   ],
 
   module: {
+    resolve: {
+      alias: {
+        'angular': paths.angular
+      }
+    },
     loaders: [
       {
         // to transform JSX into JS
@@ -47,6 +56,9 @@ module.exports = {
         )
       }
     ],
+    noParse: [
+      paths.angular
+    ]
   },
 
   postcss: function() {
