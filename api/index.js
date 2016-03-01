@@ -8,8 +8,8 @@ var mongo = require('mongodb').MongoClient;
 app.use(cors());
 app.use(bodyParser.json());
 
-// Connection URL 
-var mongoUrl = 'mongodb://localhost:27017/distances';
+var dbName = 'goatspresso';
+var mongoUrl = (process.env.MONGOURL || 'mongodb://localhost:27017/') + dbName;
 
 app.get('/', function(req, res) {
 

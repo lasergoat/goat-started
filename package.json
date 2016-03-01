@@ -5,15 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "mkdir log",
+    "postinstall": "mkdir -p log",
     "serve:api": "nodemon ./api/index.js",
     "serve:api-silent": "nodemon ./api/index.js &> ./log/api.log &",
     "mongo:start": "mongod --port 27017 &> ./log/mongo.log &",
     "mongo:stop": "killall mongod",
-    "prestart": "npm run mongo:start",
-    "start": "npm run serve:api-silent",
     "stop": "npm run mongo:stop",
-
+    "serve:heroku": "node ./api/index.js",
+    "start": "npm run serve:heroku",
     "build": "webpack -p --config webpack.config.js",
     "build:watch": "webpack-dev-server --config webpack.config.js --port 9999"
   },

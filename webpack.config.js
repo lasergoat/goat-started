@@ -1,6 +1,5 @@
 var path = require("path")
 var webpack = require('webpack')
-var BundleTracker = require('webpack-bundle-tracker')
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var autoprefixer = require('autoprefixer');
@@ -26,7 +25,10 @@ module.exports = {
       title: 'Testing',
       template: path.join(__dirname, 'public/index.html'),
       inject: 'body'
-    })
+    }),
+    new webpack.DefinePlugin({
+      __API_URL__: JSON.stringify(process.env.API_URL || 'https://goatspresso.herokuapp.com'),
+    }),
   ],
 
   module: {
@@ -40,7 +42,7 @@ module.exports = {
         // to transform JSX into JS
         test: /\.js?$/,
         exclude: /node_modules/,
-        loaders: ['react-hot', 'babel']
+        loaders: ['babel']
       },
       {
         test: /\.json/,
