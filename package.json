@@ -1,0 +1,31 @@
+{
+  "name": "goat-started",
+  "version": "1.0.0",
+  "description": "a simple boilerplate for angular app with api running mongo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "mkdir log",
+    "serve:api": "nodemon ./api/index.js",
+    "serve:api-silent": "nodemon ./api/index.js &> ./log/api.log &",
+    "serve:public": "node ./public-server.js",
+    "mongo:start": "mongod --port 27017 &> ./log/mongo.log &",
+    "mongo:stop": "killall mongod",
+    "prestart": "npm run mongo:start",
+    "start": "npm run serve:api-silent && npm run serve:public",
+    "stop": "npm run mongo:stop"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "express-livereload": "0.0.24",
+    "nodemon": "^1.9.1",
+    "webpack": "^1.12.14"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "cors": "^2.7.1",
+    "express": "^4.13.4",
+    "mongodb": "^2.1.7"
+  }
+}
