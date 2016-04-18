@@ -1,52 +1,40 @@
-var path = require("path")
-var webpack = require('webpack')
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
+var path = require('path');
+var webpack = require('webpack');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var autoprefixer = require('autoprefixer');
-
-const paths = {
-  angular: path.resolve(__dirname, 'node_modules/angular/angular.min.js')
-};
 
 module.exports = {
   context: __dirname,
 
-  entry: './public/index.js',
+  entry: path.join(__dirname, 'src/index'),
 
   output: {
-      path: path.resolve('./build/'),
-      filename: "[name]-[hash].js",
+    path: path.resolve('./dist/'),
+    filename: "[name]-[hash].js",
   },
 
   plugins: [
     new webpack.NoErrorsPlugin(),
     new ExtractTextPlugin('[name]-[hash].css'),
     new HtmlWebpackPlugin({
-      title: 'Testing',
-      template: path.join(__dirname, 'public/index.html'),
+      title: 'React Hack Night',
+      template: path.join(__dirname, 'src/index.html'),
       inject: 'body'
     }),
+    // http://stackoverflow.com/questions/30030031/passing-environment-dependent-variables-in-webpack
     new webpack.DefinePlugin({
-      __API_URL__: JSON.stringify(process.env.API_URL || 'https://goatspresso.herokuapp.com'),
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
     }),
   ],
 
   module: {
-    resolve: {
-      alias: {
-        'angular': paths.angular
-      }
-    },
     loaders: [
       {
         // to transform JSX into JS
-        test: /\.js?$/,
+        test: /\.js$/,
         exclude: /node_modules/,
         loaders: ['babel']
-      },
-      {
-        test: /\.json/,
-        loaders: ['json-loader']
       },
       {
         test: /\.scss$/,
@@ -56,22 +44,21 @@ module.exports = {
           'postcss!' +
           'sass?sourceMap'
         )
-      }
+      },
     ],
-    noParse: [
-      paths.angular
-    ]
   },
 
-  postcss: function() {
-    return [
-      autoprefixer({
-        browsers: ['ios >= 7']
-      })
-    ];
+  sassLoader: {
+    includePaths: [path.resolve(__dirname, './node_modules')]
   },
 
-  devtool: 'inline-source-map',
+  postcss: [
+    autoprefixer({
+      browsers: ['ios >= 7']
+    })
+  ],
+
+  devtool: process.env.NODE_ENV === 'development' && 'inline-source-map',
 
   resolve: {
     modulesDirectories: ['node_modules'],
